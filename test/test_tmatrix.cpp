@@ -219,3 +219,31 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 
 	ASSERT_ANY_THROW(mr = m1 - m2);
 }
+
+TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size)
+{
+	TDynamicMatrix<int> m1(3), m2(3), mr(3), mc(3);
+
+	for (int i = 0; i < m1.size(); i++)
+		for (int j = 0; j < m1.size(); j++)
+		{
+			m1[i][j] = i + j + 2;
+			m2[i][j] = (i + 1) * (j + 1);
+
+		}
+
+	mc[0][0] = 20; mc[0][1] = 40; mc[0][2] = 60;
+	mc[1][0] = 26; mc[1][1] = 52; mc[1][2] = 78;
+	mc[2][0] = 32; mc[2][1] = 64; mc[2][2] = 96;
+
+	ASSERT_NO_THROW(mr = m1 * m2);
+
+	EXPECT_EQ(mr, mc);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrices_with_not_equal_size)
+{
+	TDynamicMatrix<int> m1(3), m2(5), mr(5);
+
+	ASSERT_ANY_THROW(mr = m1 * m2);
+}

@@ -26,8 +26,8 @@ protected:
 public:
 	TDynamicVector(size_t size = 1) : sz(size)
 	{
-		if (sz <= 0 || sz > MAX_VECTOR_SIZE)
-			throw out_of_range("TDynamicVector size should be greater than zero");
+		if (sz > MAX_VECTOR_SIZE)
+			throw out_of_range("TDynamicVector size can not go above MAX_VECTOR_SIZE");
 		pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
 	}
 
@@ -38,7 +38,7 @@ public:
 		std::copy(arr, arr + sz, pMem);
 	}
 
-	TDynamicVector(const TDynamicVector& v): sz(v.sz)
+	TDynamicVector(const TDynamicVector& v) : sz(v.sz)
 	{
 		pMem = new T[sz];
 		std::copy(v.pMem, v.pMem + sz, pMem);
@@ -99,7 +99,7 @@ public:
 	// индексация с контролем
 	T& at(size_t ind)
 	{
-		if (ind >= sz || ind < 0)
+		if (ind >= sz)
 			throw(out_of_range("TDynamicVector[i]: i out of range"));
 
 		return pMem[ind];
@@ -107,7 +107,7 @@ public:
 
 	const T& at(size_t ind) const
 	{
-		if (ind >= sz || ind < 0)
+		if (ind >= sz)
 			throw(out_of_range("TDynamicVector[i]: i out of range"));
 
 		return pMem[ind];
@@ -293,7 +293,7 @@ public:
 	// матрично-векторные операции
 	TDynamicVector<T> operator*(const TDynamicVector<T>& v)
 	{
-		if (sz != v.sz)
+		if (sz != v.size())
 			throw(exception("TDynamicMatrix: cannot multiply by TDynamicVector of non-equal size"));
 
 		TDynamicVector<T> Result(sz);
@@ -353,7 +353,7 @@ public:
 	// ввод/вывод
 	friend istream& operator>>(istream& istr, TDynamicMatrix& m)
 	{
-		for (int i = 0; i < sz; i++)
+		for (int i = 0; i < m.sz; i++)
 			istr >> m[i];
 
 		return istr;
